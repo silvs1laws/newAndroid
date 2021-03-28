@@ -11,70 +11,61 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class ProgressActivity extends AppCompatActivity {
-    ProgressBar lect, circle;
 
-    SeekBar seekBar;
-    TextView volume;
-
-    RatingBar rating;
-    TextView txt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
 
-        View.OnClickListener eventHandler = new View.OnClickListener() {
+        Button btnStart = (Button)findViewById(R.id.btnStart);
+        Button btnStop = (Button)findViewById(R.id.btnStop);
+        ProgressBar rect = (ProgressBar)findViewById(R.id.progressbar);
+        ProgressBar circle = (ProgressBar)findViewById(R.id.progressindicator);
+
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.start:
-                        lect.setProgress(lect.getProgress() + 10);
-                        circle.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.stop:
-                        lect.setProgress(lect.getProgress() - 10);
-                        circle.setVisibility(View.GONE);
-                        break;
-                }
+                rect.setProgress(50);
+                circle.setVisibility(View.VISIBLE);
+
             }
-        };
+        });
 
-        Button start = (Button)findViewById(R.id.start);
-        Button stop = (Button)findViewById(R.id.stop);
-        start.setOnClickListener(eventHandler);
-        stop.setOnClickListener(eventHandler);
-        lect = (ProgressBar)findViewById(R.id.progressbar);
-        circle = (ProgressBar)findViewById(R.id.progressind) ;
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rect.setProgress(0);
+                circle.setVisibility(View.INVISIBLE);
 
-        seekBar = (SeekBar)findViewById(R.id.seekbar);
-        volume = (TextView)findViewById(R.id.volume);
+            }
+        });
 
+        SeekBar seekBar = (SeekBar)findViewById(R.id.seekbar);
+        TextView lblSeek = (TextView)findViewById(R.id.lblSeekValue);
+
+        //시크바 값이 변경 될 때 처리
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-                volume.setText("볼륨 : " + progress);
+            //값이 변경될 때
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //현재 값을 TextView에 출력
+                String msg = String.format("%d", progress);
+                lblSeek.setText(msg);
             }
-
+            //값을 변경하기 위해서 thumb을 선택 햇을 때
+            @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(ProgressActivity.this, "볼륨 조절시작", Toast.LENGTH_SHORT).show();
-            }
 
+            }
+            //값의 변경이 종료디고 thumb에서 손을 뗄 때
+            @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(ProgressActivity.this, "볼륨 조절 종료", Toast.LENGTH_SHORT).show();
+                Snackbar.make(seekBar, "값 변경 종료", Snackbar.LENGTH_SHORT).show();
             }
         });
-
-        rating = (RatingBar)findViewById(R.id.rating);
-        txt = (TextView)findViewById(R.id.txt);
-
-        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() 		{
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                txt.setText("Now Rate : " + rating);
-            }
-        });
-
-
     }
 }

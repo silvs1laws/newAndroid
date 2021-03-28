@@ -11,61 +11,29 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class WebViewActivity extends AppCompatActivity {
-    WebView webView;
-    EditText address;
-    Button btngo, btnback, btnforward, btnlocal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
-        address = (EditText) findViewById(R.id.address);
-        btngo = (Button) findViewById(R.id.btngo);
-        btnback = (Button) findViewById(R.id.btnback);
-        btnforward = (Button) findViewById(R.id.btnforward);
-        btnlocal = (Button) findViewById(R.id.btnlocal);
+        WebView webView = (WebView)findViewById(R.id.webView);
 
-        webView = (WebView) findViewById(R.id.web);
-
-
+        //Url이 리다이렉트 되는 경우에는 이 코드를 추가해야만 웹 뷰로 출력합니다.
         webView.setWebViewClient(new WebViewClient());
-        WebSettings set = webView.getSettings();
-        set.setJavaScriptEnabled(true);
-        set.setBuiltInZoomControls(true);
-        webView.loadUrl("http://www.google.com");
 
-        Button.OnClickListener handler = new Button.OnClickListener() {
+        webView.loadUrl("https://www.google.com");
+
+        Button btnLoadHtml = (Button)findViewById(R.id.btnLoadHtml);
+        btnLoadHtml.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.btngo:
-                        String url;
-                        EditText addr = (EditText) findViewById(R.id.address);
-                        url = addr.getText().toString();
-                        webView.loadUrl(url);
-                        break;
-                    case R.id.btnback:
-                        if (webView.canGoBack()) {
-                            webView.goBack();
-                        }
-                        break;
-                    case R.id.btnforward:
-                        if (webView.canGoForward()) {
-                            webView.goForward();
-                        }
-                        break;
-                    case R.id.btnlocal:
-                        webView.loadUrl("file:///android_asset/test.html");
-                        break;
-                }
+                //출력하는 Url에 자바 스크립트 코드가 있는 경우 webView의 설정을 변경
+                WebSettings set = webView.getSettings();
+                set.setJavaScriptEnabled(true);
+
+                webView.loadUrl("file:///android_asset/test.html");
             }
-        };
-
-        btngo.setOnClickListener(handler);
-        btnback.setOnClickListener(handler);
-        btnforward.setOnClickListener(handler);
-        btnlocal.setOnClickListener(handler);
-
-
+        });
     }
 }

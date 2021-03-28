@@ -17,7 +17,10 @@ public class AnimationActivity extends AppCompatActivity {
 
         Button scaleBtn1  = (Button)findViewById(R.id.scaleBtn1);
         scaleBtn1.setOnClickListener( new View.OnClickListener() {
+            //delegate 이벤트 처리 모델에서 이벤트 처리 메소드의 첫번재 매개변수는
+            //이벤트가 발생한 객체
             public void  onClick(View v) {
+                //xml로 디자인 한 애니메이션 가져오기
                 Animation anim =
                         AnimationUtils.loadAnimation(getApplicationContext(), R.anim.scale1);
                 v.startAnimation(anim);
