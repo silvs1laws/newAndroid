@@ -55,9 +55,43 @@ public class ItemActivity extends AppCompatActivity {
                 Snackbar.make(v, "삽입 성공", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         });
-
+        //조회버튼 처리
         Button btnSelect = (Button)findViewById(R.id.btnSelect);
-        Button btnDelete = (Button)findViewById(R.id.btnDelete);
+        btnSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                String query = itemname.getText().toString();
+                //조회 전 유효성 검사
+                if(query == null && query.trim().length() == 0){
+                    return;
+                }
+                //db연동 클래스 객체
+                MyDBHandler handler = new MyDBHandler(ItemActivity.this);
+                Item item = handler.findItem(query);
+                if (item == null){
+                    itemid.setText("일치하는 데이터가 없습니다.");
+                }else{
+                    itemid.setText(item.get_id()+"");
+                    quantity.setText(item.get_quantity()+"");
+                }
+            }
+        });
+
+        Button btnDelete = (Button)findViewById(R.id.btnDelete);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = itemname.getText().toString();
+
+                if(query == null && query.trim().length() == 0){
+                    itemname.setText("삭제할 이름을 입력하세요");
+                }else {
+                    MyDBHandler handler = new MyDBHandler(ItemActivity.this);
+                    handler.deleteItem(query);
+                    itemid.setText("삭제가 완료되었습니다.");
+                }
+            }
+        });
     }
 }

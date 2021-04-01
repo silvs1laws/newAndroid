@@ -51,8 +51,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
     //제품 이름을 가지고 검색해서 1개의 데이터를 리턴하는 메소드
     public Item findItem(String itemname){
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from item where itemname = " + "\"" +
-                itemname + "\"", null);
+        Cursor cursor = db.rawQuery("select * from item where itemname = ?",
+                new String[]{itemname});
 
         Item item = new Item();
         //1개인 경우 if 여러개인 경우 while
