@@ -16,7 +16,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnDownload"
+        android:id="@+id/btnSave"
         android:text="이미지 바로 출력"/>
 
     <ImageView

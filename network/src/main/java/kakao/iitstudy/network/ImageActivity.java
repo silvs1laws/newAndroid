@@ -33,9 +33,9 @@ public class ImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image);
 
         //이미지 당누로드 받아서 바로 출력하는 버튼의 클릭 이벤트 핸들러 작성
-        Button btnDownload = (Button)findViewById(R.id.btnDownload);
+        Button btnDisplay = (Button)findViewById(R.id.btnDisplay);
         //anonymous class 이용해서 이벤트 처리 - java의 nested class, 람다 복습
-       btnDownload.setOnClickListener(new View.OnClickListener() {
+        btnDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(){
