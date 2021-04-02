@@ -21,9 +21,10 @@ public class ImageActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg){
             //여러 스레드에서 사용하도록 하고자 할 때는 msg 의 what 을 이용해서 분기
+
             }
         };
-    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,13 @@ public class ImageActivity extends AppCompatActivity {
                             //이미지를 다운로드 받을 스트림 생성
                             InputStream is = new URL("https://dimg.donga.com/wps/NEWS/IMAGE/2019/07/01/96260737.1.jpg").openStream();
                             Bitmap bitmap = BitmapFactory.decodeStream(is);
+                            //핸들러에게 전송할 메세지를 생성
+                            Message message = new Message();
+                            message.what = 1;
+                            message.obj = bitmap;
+                            //핸들러에게 메세지 전송
+                            handler.sendMessage(message);
+
 
                         }catch (Exception e){
                             Log.e("예외", e.getLocalizedMessage());
