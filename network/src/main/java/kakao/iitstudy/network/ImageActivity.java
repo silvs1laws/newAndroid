@@ -21,10 +21,8 @@ public class ImageActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg){
             //여러 스레드에서 사용하도록 하고자 할 때는 msg 의 what 을 이용해서 분기
-            switch(msg.what){
-                case:
             }
-        }
+        };
     };
 
     @Override
