@@ -2,12 +2,18 @@ package kakao.iitstudy.network;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import java.io.InputStream;
+import java.net.URL;
 
 public class ImageActivity extends AppCompatActivity {
 
@@ -32,7 +38,20 @@ public class ImageActivity extends AppCompatActivity {
        btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new Thread(){
+                    @Override
+                    public void run(){
+                        //이미지 가져오기
+                        try {
+                            //이미지를 다운로드 받을 스트림 생성
+                            InputStream is = new URL("https://dimg.donga.com/wps/NEWS/IMAGE/2019/07/01/96260737.1.jpg").openStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(is);
 
+                        }catch (Exception e){
+                            Log.e("예외", e.getLocalizedMessage());
+                        }
+                    }
+                }.start();
             }
         });
     }
