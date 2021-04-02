@@ -14,8 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ImageActivity extends AppCompatActivity {
@@ -27,11 +32,30 @@ public class ImageActivity extends AppCompatActivity {
             ImageView imageView = (ImageView) findViewById(R.id.ImageView);
             Bitmap bitmap = null;
 
+            //다운로드 된 파일 경로 지정
+            String dirPath = Environment.getDataDirectory().getAbsolutePath();
+            String filePath = dirPath + "/data/kakao.iitstudy.network/files/web.jpg";
+
             switch (msg.what) {
                 case 1:
                     //데이터 가져오기
                     bitmap = (Bitmap) msg.obj;
                     imageView.setImageBitmap(bitmap);
+                    break;
+                case 2:
+                    //파일이 존재하는 경우
+                    Snackbar.make(imageView, "파일이 이미 존재합니다.",
+                            BaseTransientBottomBar.LENGTH_SHORT).show();
+                    //기존 파일 출력
+                    imageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
+                    break;
+
+                    //파일이 존재하지 않는 경우
+                case 3:
+                    Snackbar.make(imageView, "파일이 없어서 다운로드 받아서 출력합니다.",
+                            BaseTransientBottomBar.LENGTH_SHORT).show();
+                    //다운로드 받은 파일 출력
+                    imageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
                     break;
             }
         }
@@ -43,7 +67,7 @@ public class ImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
-        //이미지 당누로드 받아서 바로 출력하는 버튼의 클릭 이벤트 핸들러 작성
+        //이미지 다운로드 받아서 바로 출력하는 버튼의 클릭 이벤트 핸들러 작성
         Button btnDisplay = (Button) findViewById(R.id.btnDisplay);
         //anonymous class 이용해서 이벤트 처리 - java의 nested class, 람다 복습
         btnDisplay.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +118,7 @@ public class ImageActivity extends AppCompatActivity {
                     //이미 파일이 있는 경우이므로 데이터를 전달할 필요가 없습니다.
                     Message message = new Message();
                     message.what = 2;
-                    handler.sendMessage(message);
+                    handler.sendMessage(message); 
                 }else{
                     //이미지 파일이 없는 경우 이미지 파일을 다운로드 받아서 저장하고 핸들러에게
                     //메세지를 전송
@@ -104,6 +128,35 @@ public class ImageActivity extends AppCompatActivity {
                             //이미지 데이터 다운로드 받기
                             try {
                                 URL url = new URL("https://www.spcmagazine.com/wp-content/uploads/2019/07/%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%B0%B0%EC%8A%A4%ED%82%A8%EB%9D%BC%EB%B9%88%EC%8A%A4_-%EC%9D%B8%EA%B8%B0-%ED%94%8C%EB%A0%88%EC%9D%B4%EB%B2%84-2%EC%A2%85-%EC%9E%AC%EC%B6%9C%EC%8B%9C.jpg");
+                                HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                                //옵션 설정
+                                con.setConnectTimeout(30000);
+                                con.setUseCaches(false);
+
+                                //텍스트가 아닌 데이터를 가져오기 위한 스트림을 생성
+                                InputStream is = con.getInputStream();
+                                //기록할 파일 스트림을 생성
+                                FileOutputStream fos = openFileOutput("web.jpg", 0);
+                                //데이터를 임시로 저장할 바이트 배열을 생성
+                                byte[] raster = new byte[con.getContentLength()];
+
+                                //다운로드 받아서 저장하기
+                                while(true){
+                                    int read = is.read(raster);
+                                    if (read <=0){
+                                        break;
+                                    }
+                                    fos.write(raster, 0, read);
+                                }
+                                is.close();
+                                fos.close();
+                                con.disconnect();
+
+                                //핸들러에게 메세지 전송
+                                Message msg = new Message();
+                                msg.what = 3;
+                                handler.sendMessage(msg);
+
                             }catch (Exception e){
                                 Log.e("예외 발생2", e.getLocalizedMessage());
                             }
