@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/activity" />
+            <option value="$PROJECT_DIR$/adapterview" />
             <option value="$PROJECT_DIR$/androidlayout" />
             <option value="$PROJECT_DIR$/androiduserinterface" />
             <option value="$PROJECT_DIR$/app" />
@@ -21,6 +22,7 @@
             <option value="$PROJECT_DIR$/resourceuse" />
             <option value="$PROJECT_DIR$/thread" />
             <option value="$PROJECT_DIR$/varietyview" />
+            <option value="$PROJECT_DIR$/webserverparameter" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
