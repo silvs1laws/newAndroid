@@ -1,3 +1,4 @@
+include ':supportactivity'
 include ':adapterview'
 include ':webserverparameter'
 include ':network'
