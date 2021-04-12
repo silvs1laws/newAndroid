@@ -31,7 +31,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
         //데이터 찾아오기
         Person item = items.get(position);
         //뷰 홀더를 이용해서 데이터를 출력
-        holder.setItems(item);
+        holder.setItem(item);
     }
 
     //데이터 개수를 설정해주는 메소드

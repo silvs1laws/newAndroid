@@ -1,3 +1,4 @@
+include ':multimedia'
 include ':supportactivity'
 include ':adapterview'
 include ':webserverparameter'
